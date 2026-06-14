@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LoveSpeak Quiz • Discover Your Love Language</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap');
+  :root { --rose: #e11d48; }
+  body { font-family: 'Inter', system_ui, sans-serif; }
+  .heading-serif { font-family: 'Playfair Display', Georgia, serif; }
+  .love-gradient { background: linear-gradient(135deg, #e11d48 0%, #be123c 100%); }
+  .quiz-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+  .scale-btn { transition: all 0.15s ease; }
+  .scale-btn.selected { transform: scale(1.05); box-shadow: 0 10px 15px -3px rgb(225 29 72 / 0.2); }
+  .section-header { font-size: 1.1rem; letter-spacing: -.025em; }
+  .lang-bar { transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease; }
+  .result-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+  .result-card:hover { transform: translateY(-2px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
+  .love-emoji { font-size: 3.5rem; line-height: 1; }
+  .question-text { font-size: 1.15rem; line-height: 1.5; }
+  .nav-active { color: #e11d48; font-weight: 600; }
+</style>
+</head>
+<body class="bg-zinc-50 text-zinc-800">
+<div class="max-w-3xl mx-auto min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="bg-white border-b border-zinc-100 sticky top-0 z-50">
+    <div class="max-w-3xl mx-auto px-5 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-x-3">
+        <div class="w-10 h-10 love-gradient rounded-2xl flex items-center justify-center shadow-inner">
+          <i class="fa-solid fa-heart text-white text-2xl"></i>
+        </div>
+        <div>
+          <span class="font-semibold text-2xl tracking-tighter">LoveSpeak</span>
+          <span class="text-xs font-medium text-zinc-400 tracking-[2px] block -mt-1">QUIZ</span>
+        </div>
+      </div>
+      <div class="text-xs px-3 py-1.5 rounded-full bg-zinc-100 text-zinc-500 font-medium flex items-center gap-x-1.5">
+        <i class="fa-solid fa-clock text-xs"></i>
+        <span>5 min</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 px-5 pb-12">
+    <!-- LANDING VIEW -->
+    <div id="landing-view">
+      <div class="pt-10 pb-8 text-center">
+        <div class="inline-flex items-center gap-x-2 px-4 py-1.5 rounded-full bg-rose-50 text-rose-600 text-sm font-medium mb-6">
+          <i class="fa-solid fa-heart-pulse"></i>
+          <span>Based on The 5 Love Languages</span>
+        </div>
+        
+        <h1 class="text-6xl font-semibold tracking-tighter heading-serif text-zinc-900 mb-3">Discover how you<br>best receive love.</h1>
+        <p class="max-w-md mx-auto text-xl text-zinc-600">Learn your primary love language, understand your secondary, and gain powerful insights to deepen every relationship.</p>
+      </div>
+
+      <!-- 5 Languages Preview -->
+      <div class="mb-10">
+        <p class="text-center text-sm font-medium text-zinc-500 mb-4 tracking-wider">THE FIVE LOVE LANGUAGES</p>
+        <div class="grid grid-cols-5 gap-3">
+          <div class="bg-white rounded-3xl p-4 text-center border border-zinc-100 shadow-sm">
+            <div class="text-3xl mb-1.5">💬</div>
+            <div class="text-xs font-semibold text-rose-600">Words of<br>Affirmation</div>
+          </div>
+          <div class="bg-white rounded-3xl p-4 text-center border border-zinc-100 shadow-sm">
+            <div class="text-3xl mb-1.5">🤝</div>
+            <div class="text-xs font-semibold text-amber-600">Acts of<br>Service</div>
+          </div>
+          <div class="bg-white rounded-3xl p-4 text-center border border-zinc-100 shadow-sm">
+            <div class="text-3xl mb-1.5">🎁</div>
+            <div class="text-xs font-semibold text-violet-600">Receiving<br>Gifts</div>
+          </div>
+          <div class="bg-white rounded-3xl p-4 text-center border border-zinc-100 shadow-sm">
+            <div class="text-3xl mb-1.5">🕰️</div>
+            <div class="text-xs font-semibold text-teal-600">Quality<br>Time</div>
+          </div>
+          <div class="bg-white rounded-3xl p-4 text-center border border-zinc-100 shadow-sm">
+            <div class="text-3xl mb-1.5">🤗</div>
+            <div class="text-xs font-semibold text-pink-600">Physical<br>Touch</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="max-w-xs mx-auto">
+        <button onclick="startQuiz()" 
+                class="w-full love-gradient text-white font-semibold py-4 px-8 rounded-3xl text-lg flex items-center justify-center gap-x-3 shadow-lg shadow-rose-500/30 active:scale-[0.985] transition-all">
+          <span>Start the Quiz</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <p class="text-center text-xs text-zinc-400 mt-4">20 quick questions • Instant detailed results</p>
+      </div>
+
+      <div class="mt-10 text-center">
+        <button onclick="showInfoModal()" class="text-sm text-zinc-500 hover:text-zinc-700 flex items-center gap-x-2 mx-auto">
+          <i class="fa-solid fa-info-circle"></i>
+          <span>What are the 5 Love Languages?</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- QUIZ VIEW -->
+    <div id="quiz-view" class="hidden pt-6">
+      <div class="mb-6">
+        <!-- Progress -->
+        <div class="flex items-center justify-between mb-2 px-1">
+          <div class="flex items-baseline gap-x-2">
+            <span id="progress-text" class="font-mono text-sm font-semibold text-rose-600">1 / 20</span>
+            <span class="text-xs text-zinc-400">QUESTIONS</span>
+          </div>
+          <div class="text-xs font-medium text-zinc-400" id="progress-percent">5%</div>
+        </div>
+        <div class="h-2.5 bg-zinc-100 rounded-full overflow-hidden">
+          <div id="progress-bar" class="h-2.5 love-gradient rounded-full transition-all duration-500" style="width: 5%"></div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-3xl shadow-xl shadow-zinc-200/60 border border-zinc-100 p-7 quiz-card">
+        <div class="mb-6">
+          <div class="uppercase tracking-[1.5px] text-xs font-semibold text-rose-500 mb-2">QUESTION <span id="q-num">1</span> OF 20</div>
+          <h2 id="question-text" class="question-text font-semibold text-zinc-900 leading-tight"></h2>
+        </div>
+
+        <!-- Likert Scale -->
+        <div class="mb-2">
+          <div class="flex justify-between items-center mb-3 px-1">
+            <div class="text-xs font-medium text-zinc-400">Not at all<br>like me</div>
+            <div class="text-xs font-medium text-zinc-400 text-right">Very much<br>like me</div>
+          </div>
+          
+          <div id="scale-container" class="grid grid-cols-7 gap-2">
+            <!-- JS populated buttons 1-7 -->
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between mt-8">
+          <button onclick="prevQuestion()" id="btn-prev"
+                  class="px-5 py-2.5 text-sm font-medium flex items-center gap-x-2 text-zinc-500 hover:text-zinc-700 disabled:opacity-40 transition-colors">
+            <i class="fa-solid fa-chevron-left"></i>
+            <span>Back</span>
+          </button>
+          
+          <button onclick="nextQuestion()" id="btn-next"
+                  class="px-8 py-3 bg-zinc-900 hover:bg-black text-white text-sm font-semibold rounded-2xl flex items-center gap-x-2 disabled:opacity-50 transition-all active:scale-[0.985]">
+            <span id="next-text">Continue</span>
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <div class="inline-flex items-center text-xs text-zinc-400">
+          <i class="fa-solid fa-shield-halved mr-1.5"></i>
+          <span>Your answers are private and only used for your results</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS VIEW -->
+    <div id="results-view" class="hidden pt-6">
+      <div class="text-center mb-8">
+        <div class="inline-block px-4 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-semibold tracking-wider mb-3">YOUR PROFILE IS READY</div>
+        <h2 class="text-4xl font-semibold tracking-tighter heading-serif">Your Love Language<br>Profile</h2>
+      </div>
+
+      <!-- Primary -->
+      <div id="primary-card" class="result-card bg-white border border-zinc-100 rounded-3xl p-7 mb-6 shadow-xl">
+        <div class="flex gap-5">
+          <div id="primary-emoji" class="love-emoji flex-shrink-0 w-20 text-center"></div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-x-3">
+              <div>
+                <div class="uppercase text-xs tracking-[1px] font-bold text-rose-500">PRIMARY</div>
+                <div id="primary-name" class="text-3xl font-semibold tracking-tight text-zinc-900"></div>
+              </div>
+              <div class="ml-auto text-right">
+                <div class="text-xs text-zinc-400">SCORE</div>
+                <div id="primary-score" class="font-mono text-3xl font-semibold text-rose-600"></div>
+              </div>
+            </div>
+            <div id="primary-desc" class="mt-4 text-[15px] leading-relaxed text-zinc-600"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secondary -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div id="secondary-card" class="result-card bg-white border border-zinc-100 rounded-3xl p-6">
+          <div class="uppercase text-xs tracking-wider font-bold text-teal-600 mb-1">SECONDARY</div>
+          <div class="flex items-center gap-x-3">
+            <div id="secondary-emoji" class="text-4xl"></div>
+            <div>
+              <div id="secondary-name" class="font-semibold text-2xl tracking-tight"></div>
+              <div id="secondary-score" class="font-mono text-sm text-zinc-400"></div>
+            </div>
+          </div>
+          <div id="secondary-desc" class="mt-4 text-sm text-zinc-600 leading-relaxed"></div>
+        </div>
+
+        <!-- Lowest -->
+        <div id="lowest-card" class="result-card bg-white border border-zinc-100 rounded-3xl p-6">
+          <div class="uppercase text-xs tracking-wider font-bold text-zinc-400 mb-1">YOUR LOWEST</div>
+          <div class="flex items-center gap-x-3">
+            <div id="lowest-emoji" class="text-4xl opacity-75"></div>
+            <div>
+              <div id="lowest-name" class="font-semibold text-2xl tracking-tight text-zinc-700"></div>
+              <div id="lowest-score" class="font-mono text-sm text-zinc-400"></div>
+            </div>
+          </div>
+          <div id="lowest-insight" class="mt-4 text-sm text-zinc-600 leading-relaxed"></div>
+        </div>
+      </div>
+
+      <!-- Full Scores Visual -->
+      <div class="bg-white border border-zinc-100 rounded-3xl p-6 mb-8">
+        <div class="flex items-center justify-between mb-4 px-1">
+          <div class="font-semibold text-sm">Your Full Love Language Profile</div>
+          <div class="text-xs text-zinc-400">Ranked by score</div>
+        </div>
+        <div id="score-bars" class="space-y-3">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Why Speaking Others Languages Matters -->
+      <div class="bg-gradient-to-br from-zinc-900 to-zinc-800 text-white rounded-3xl p-7 mb-8">
+        <div class="flex items-center gap-x-3 mb-4">
+          <i class="fa-solid fa-lightbulb text-rose-400"></i>
+          <div class="font-semibold text-lg">The Power of Speaking Their Language</div>
+        </div>
+        <div class="text-zinc-200 text-[15px] leading-relaxed space-y-4">
+          <p>Most people naturally give love in the way <strong>they</strong> prefer to receive it. This often creates a mismatch — your partner may be showing love through gifts while you crave quality time, leaving both feeling unseen.</p>
+          <p class="font-medium">Learning to speak someone else’s love language is one of the highest forms of relational intelligence. It says: “I see you. I value what makes you feel loved.”</p>
+        </div>
+      </div>
+
+      <!-- Reflection Exercise -->
+      <div class="bg-white border border-zinc-100 rounded-3xl p-7 mb-8">
+        <div class="font-semibold text-lg mb-1 flex items-center gap-x-2">
+          <i class="fa-solid fa-pen-nib text-rose-500"></i>
+          <span>Reflect & Connect</span>
+        </div>
+        <p class="text-sm text-zinc-500 mb-5">A powerful mental exercise to internalize what you’ve learned.</p>
+
+        <div class="space-y-6">
+          <div>
+            <label class="block text-sm font-medium text-zinc-600 mb-2">1. Imagine receiving your <span class="font-semibold text-rose-600">primary love language</span> consistently from someone important to you. How would it impact you emotionally and in your relationship?</label>
+            <textarea id="reflect-primary" rows="3" class="w-full border border-zinc-200 focus:border-rose-300 rounded-2xl p-4 text-sm placeholder:text-zinc-400" placeholder="When my partner speaks my language, I feel..."></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-zinc-600 mb-2">2. Think of a close loved one. What do you believe is <span class="font-semibold">their</span> primary love language? How could you speak it to them this week?</label>
+            <textarea id="reflect-other" rows="3" class="w-full border border-zinc-200 focus:border-rose-300 rounded-2xl p-4 text-sm placeholder:text-zinc-400" placeholder="I think they value... So I could..."></textarea>
+          </div>
+        </div>
+
+        <div class="flex gap-3 mt-6">
+          <button onclick="copyReflections()" 
+                  class="flex-1 py-3 text-sm font-semibold border border-zinc-200 hover:bg-zinc-50 rounded-2xl flex items-center justify-center gap-x-2 transition-colors">
+            <i class="fa-solid fa-copy"></i>
+            <span>Copy Reflections</span>
+          </button>
+          <button onclick="copyFullResults()" 
+                  class="flex-1 py-3 bg-zinc-900 hover:bg-black text-white text-sm font-semibold rounded-2xl flex items-center justify-center gap-x-2 transition-all">
+            <i class="fa-solid fa-share-alt"></i>
+            <span>Share Full Results</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex gap-3">
+        <button onclick="retakeQuiz()" 
+                class="flex-1 py-4 text-sm font-semibold border border-zinc-200 hover:bg-white rounded-3xl flex items-center justify-center gap-x-2">
+          <i class="fa-solid fa-redo"></i>
+          <span>Retake Quiz</span>
+        </button>
+        <button onclick="window.location.reload()" 
+                class="flex-1 py-4 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-3xl flex items-center justify-center gap-x-2">
+          <span>Done</span>
+        </button>
+      </div>
+
+      <div class="text-center mt-8 text-xs text-zinc-400">
+        Inspired by Gary Chapman’s <em>The 5 Love Languages</em>. This is an independent educational tool.
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Info Modal -->
+<div id="info-modal" onclick="if (event.target.id === 'info-modal') hideInfoModal()" class="hidden fixed inset-0 bg-black/60 flex items-end md:items-center justify-center z-[100]">
+  <div onclick="event.stopImmediatePropagation()" class="bg-white w-full md:w-[480px] md:rounded-3xl md:m-4 rounded-t-3xl p-6 max-h-[85vh] overflow-auto">
+    <div class="flex justify-between items-center mb-5">
+      <div class="font-semibold text-xl">The 5 Love Languages</div>
+      <button onclick="hideInfoModal()" class="text-2xl leading-none text-zinc-400 hover:text-zinc-600">&times;</button>
+    </div>
+    <div class="space-y-5 text-sm">
+      <p class="text-zinc-600">Created by Dr. Gary Chapman, the concept identifies five primary ways people express and experience love. Understanding yours and your loved ones’ languages helps you give and receive love more effectively.</p>
+      
+      <div class="space-y-3">
+        <div class="flex gap-3"><span class="font-mono w-5 text-rose-500">01</span> <span><strong>Words of Affirmation</strong> — Verbal compliments, encouragement, and appreciation.</span></div>
+        <div class="flex gap-3"><span class="font-mono w-5 text-amber-500">02</span> <span><strong>Acts of Service</strong> — Practical help and taking care of responsibilities.</span></div>
+        <div class="flex gap-3"><span class="font-mono w-5 text-violet-500">03</span> <span><strong>Receiving Gifts</strong> — Thoughtful tokens that show you were on their mind.</span></div>
+        <div class="flex gap-3"><span class="font-mono w-5 text-teal-500">04</span> <span><strong>Quality Time</strong> — Undivided attention and shared meaningful experiences.</span></div>
+        <div class="flex gap-3"><span class="font-mono w-5 text-pink-500">05</span> <span><strong>Physical Touch</strong> — Hugs, closeness, and affectionate contact.</span></div>
+      </div>
+      <p class="text-xs text-zinc-400 pt-2">Knowing your languages helps you communicate needs clearly and love others more intentionally.</p>
+    </div>
+    <button onclick="hideInfoModal()" class="mt-6 w-full py-3 text-sm font-semibold bg-zinc-100 rounded-2xl">Got it</button>
+  </div>
+</div>
+
+<script>
+// Tailwind script
+function initTailwind() {
+  document.documentElement.style.setProperty('--accent', '#e11d48');
+}
+
+// Questions - 20 carefully crafted, user-friendly statements (4 per language)
+const questions = [
+  {id:1, text:"I feel deeply loved when someone gives me genuine compliments or tells me specifically what they appreciate about me.", cat:"WOA"},
+  {id:2, text:"Encouraging words like 'I'm proud of you' or 'You did an amazing job' from loved ones really boost how I feel about myself.", cat:"WOA"},
+  {id:3, text:"I love receiving handwritten notes, heartfelt texts, or verbal affirmations that express love and value.", cat:"WOA"},
+  {id:4, text:"Being told 'I love you' or hearing why I matter to someone makes a significant impact on my sense of security in the relationship.", cat:"WOA"},
+  {id:5, text:"When someone helps with chores, errands, or tasks without being asked, it makes me feel cared for and supported.", cat:"AOS"},
+  {id:6, text:"I feel loved when a partner or family member takes initiative to handle something on my to-do list or makes my life easier through practical help.", cat:"AOS"},
+  {id:7, text:"Acts like cooking a meal, fixing something broken, or running an errand for me communicate love more powerfully than words sometimes.", cat:"AOS"},
+  {id:8, text:"I really appreciate when people notice what needs doing and step in to help without me having to request it.", cat:"AOS"},
+  {id:9, text:"Receiving a thoughtful gift — even small — makes me feel special because it shows the person was thinking about me.", cat:"RG"},
+  {id:10, text:"I feel loved when someone surprises me with a gift that fits my tastes or needs perfectly.", cat:"RG"},
+  {id:11, text:"The gesture of a gift serves as a meaningful symbol that someone cares enough to choose something just for me.", cat:"RG"},
+  {id:12, text:"Gifts given on ordinary days (not just holidays) make me feel remembered and valued in everyday life.", cat:"RG"},
+  {id:13, text:"Having someone's full, undivided attention during a conversation or activity makes me feel truly loved and connected.", cat:"QT"},
+  {id:14, text:"I cherish dedicated time spent together — like date nights, long walks, or deep talks — where we focus only on each other.", cat:"QT"},
+  {id:15, text:"I feel most loved when a person prioritizes spending quality time with me and puts away distractions.", cat:"QT"},
+  {id:16, text:"Shared experiences and meaningful conversations where we are fully present recharge me and strengthen my relationships.", cat:"QT"},
+  {id:17, text:"Physical touch like hugs, cuddling, holding hands, or a gentle touch on the arm makes me feel safe and loved.", cat:"PT"},
+  {id:18, text:"I feel most connected and cared for through physical affection — kisses, massages, sitting close, or other loving touch.", cat:"PT"},
+  {id:19, text:"Non-sexual physical closeness and touch from loved ones reassures me of their love and presence.", cat:"PT"},
+  {id:20, text:"Hugs or affectionate touch at the end of a long day or during tough times helps me feel supported more than almost anything else.", cat:"PT"}
+];
+
+const langMeta = {
+  WOA: { name: "Words of Affirmation", emoji: "💬", color: "rose", accent: "#e11d48" },
+  AOS: { name: "Acts of Service", emoji: "🤝", color: "amber", accent: "#d97706" },
+  RG: { name: "Receiving Gifts", emoji: "🎁", color: "violet", accent: "#7c3aed" },
+  QT: { name: "Quality Time", emoji: "🕰️", color: "teal", accent: "#0f766e" },
+  PT: { name: "Physical Touch", emoji: "🤗", color: "pink", accent: "#db2777" }
+};
+
+const langDetails = {
+  WOA: {
+    primary: "Your primary love language is <strong>Words of Affirmation</strong>. You feel most loved when others express care through spoken or written words — genuine compliments, encouragement, appreciation, and verbal affection. You likely feel a deep sense of value when someone notices your efforts and puts it into words, or when they affirm your character and importance to them. Hearing specific praise or heartfelt 'I love you's fills your emotional tank powerfully.",
+    howToReceive: "Share with your partner or family that words matter deeply to you. Ask them to be specific in their compliments and encouragement. You may also enjoy love notes, voice messages, or public (or private) affirmations.",
+    secondary: "As your secondary language, Words of Affirmation still plays an important role. You appreciate verbal recognition, but other gestures may fill your tank slightly more. Still, don't underestimate the power of a well-timed, sincere compliment from you or to you.",
+    low: "Knowing that Words of Affirmation ranks lowest for you is valuable information. It doesn't mean you dislike kind words — it simply means other actions speak louder to you. However, many people have this as their primary language. Learning to offer specific, genuine verbal affirmation can be a game-changer in those relationships, even if it doesn't come as naturally to you."
+  },
+  AOS: {
+    primary: "Your primary love language is <strong>Acts of Service</strong>. You feel most loved and cared for when others show love through practical help — doing chores, running errands, fixing things, or taking tasks off your plate without being asked. These actions communicate 'I see your burdens and want to lighten them' in a language that resonates deeply with you.",
+    howToReceive: "Clearly communicate your needs and priorities to loved ones. Let them know that help with specific tasks (even small ones) makes you feel deeply supported. Celebrate when they serve you — it reinforces the behavior.",
+    secondary: "Acts of Service is your secondary love language, meaning practical help is highly meaningful to you, though perhaps not the absolute top way you receive love. You still notice and appreciate when people make your life easier through action.",
+    low: "If Acts of Service is your lowest, you may not naturally prioritize doing things for others as a primary expression of love. That's okay — but recognize that for many people (especially partners or family under stress), acts of service are their emotional currency. Offering practical help can deeply move them and strengthen your bond."
+  },
+  RG: {
+    primary: "Your primary love language is <strong>Receiving Gifts</strong>. You feel loved when someone gives you a thoughtful gift — even small or inexpensive — because it shows they were thinking about you specifically. The gift becomes a tangible symbol of 'I know you and I care enough to choose something for you.' Surprises and everyday tokens of thoughtfulness deeply impact you.",
+    howToReceive: "Let loved ones know that gifts (big or small, on special days or ordinary ones) make you feel remembered and cherished. You might enjoy wish lists or gentle hints about things that would delight you. The thought and effort behind the gift matters most to you.",
+    secondary: "Receiving Gifts is your secondary language. While not your strongest preference, thoughtful gifts still warm your heart and make you feel seen. You likely enjoy both giving and receiving meaningful tokens.",
+    low: "A low score in Receiving Gifts doesn't mean you are materialistic or that gifts don't matter at all — it means other expressions of love land more powerfully for you. For people whose primary language is gifts, however, a small thoughtful present can speak volumes. Learning to give meaningful gifts (even non-material ones like experiences) can be a beautiful way to love them well."
+  },
+  QT: {
+    primary: "Your primary love language is <strong>Quality Time</strong>. You feel most loved when you receive someone's full, undivided attention. Deep conversations, shared activities without distractions, planned time together, and being truly present with each other recharge you and make you feel deeply connected and valued. It's not just about being in the same room — it's about focused togetherness.",
+    howToReceive: "Protect and prioritize dedicated time with loved ones. Put phones away. Plan regular one-on-one time. Tell people that your favorite moments are when you have their complete presence and attention. Quality over quantity is key for you.",
+    secondary: "Quality Time being secondary means focused presence and shared experiences are very important to you, even if another language edges it out slightly. You likely value meaningful conversations and intentional time highly.",
+    low: "If Quality Time ranks lowest for you, you may be more independent or fulfilled by other expressions of love. However, many people — especially those who feel lonely or crave connection — have Quality Time as their primary. Carving out undistracted time for them can be one of the most loving things you do, even if it isn't your natural preference."
+  },
+  PT: {
+    primary: "Your primary love language is <strong>Physical Touch</strong>. You feel most loved, secure, and connected through physical affection — hugs, cuddles, holding hands, kisses, massages, or simply sitting close. Touch communicates safety, presence, and care in a way words or actions sometimes cannot. It is a powerful reassurance of love for you.",
+    howToReceive: "Communicate openly (and appropriately for the relationship) that physical affection is important to you. Initiate loving touch. Ask for hugs or closeness when you need reassurance. Non-sexual touch throughout the day can be especially meaningful.",
+    secondary: "Physical Touch is your secondary love language. You enjoy and are comforted by affectionate touch, but other languages may resonate even more strongly. Still, touch remains a beautiful and important connector for you.",
+    low: "A lower ranking in Physical Touch simply means other ways of receiving love speak more loudly to you. It does not mean you dislike touch. For people whose primary language is Physical Touch, however, hugs, closeness, and affectionate contact are essential for feeling loved and secure. Offering appropriate loving touch can be profoundly meaningful to them."
+  }
+};
+
+let currentQuestionIndex = 0;
+let answers = {};
+let quizStarted = false;
+
+// Progress
+function updateProgress() {
+  const total = questions.length;
+  const answered = Object.keys(answers).length;
+  const percent = Math.round((answered / total) * 100);
+  
+  const progressBar = document.getElementById('progress-bar');
+  const progressText = document.getElementById('progress-text');
+  const progressPercent = document.getElementById('progress-percent');
+  
+  if (progressBar) progressBar.style.width = `${percent}%`;
+  if (progressText) progressText.textContent = `${answered} / ${total}`;
+  if (progressPercent) progressPercent.textContent = `${percent}%`;
+}
+
+// Render scale buttons
+function renderScale(questionId) {
+  const container = document.getElementById('scale-container');
+  container.innerHTML = '';
+  
+  for (let i = 1; i <= 7; i++) {
+    const btn = document.createElement('button');
+    btn.className = `scale-btn flex-1 h-12 flex items-center justify-center rounded-2xl border text-lg font-semibold transition-all active:scale-95 ${answers[questionId] === i ? 'bg-rose-600 text-white border-rose-600 shadow-inner selected' : 'bg-white border-zinc-200 hover:border-rose-200 hover:bg-rose-50 text-zinc-700'}`;
+    btn.innerHTML = `<span>${i}</span>`;
+    btn.onclick = () => selectAnswer(questionId, i, btn);
+    container.appendChild(btn);
+  }
+}
+
+function selectAnswer(qId, score, btnElement) {
+  answers[qId] = score;
+  
+  // Update all buttons in container
+  const container = document.getElementById('scale-container');
+  Array.from(container.children).forEach((b, idx) => {
+    const val = idx + 1;
+    if (val === score) {
+      b.className = `scale-btn flex-1 h-12 flex items-center justify-center rounded-2xl border text-lg font-semibold transition-all bg-rose-600 text-white border-rose-600 shadow-inner selected`;
+    } else {
+      b.className = `scale-btn flex-1 h-12 flex items-center justify-center rounded-2xl border text-lg font-semibold transition-all bg-white border-zinc-200 hover:border-rose-200 hover:bg-rose-50 text-zinc-700`;
+    }
+  });
+  
+  updateProgress();
+  
+  // Enable next button
+  const nextBtn = document.getElementById('btn-next');
+  if (nextBtn) nextBtn.disabled = false;
+}
+
+// Show current question
+function showQuestion(index) {
+  const q = questions[index];
+  document.getElementById('question-text').innerHTML = q.text;
+  document.getElementById('q-num').textContent = index + 1;
+  
+  renderScale(q.id);
+  
+  // Restore previous answer if exists
+  const nextBtn = document.getElementById('btn-next');
+  const prevBtn = document.getElementById('btn-prev');
+  
+  if (answers[q.id]) {
+    // Highlight the saved answer
+    const container = document.getElementById('scale-container');
+    Array.from(container.children).forEach((b, idx) => {
+      if (idx + 1 === answers[q.id]) {
+        b.className = `scale-btn flex-1 h-12 flex items-center justify-center rounded-2xl border text-lg font-semibold transition-all bg-rose-600 text-white border-rose-600 shadow-inner selected`;
+      }
+    });
+    if (nextBtn) nextBtn.disabled = false;
+  } else {
+    if (nextBtn) nextBtn.disabled = true;
+  }
+  
+  if (prevBtn) prevBtn.style.visibility = (index === 0) ? 'hidden' : 'visible';
+  
+  // Update next button text
+  if (nextBtn) {
+    if (index === questions.length - 1) {
+      nextBtn.innerHTML = `<span>Finish Quiz</span> <i class="fa-solid fa-check"></i>`;
+    } else {
+      nextBtn.innerHTML = `<span id="next-text">Continue</span> <i class="fa-solid fa-chevron-right"></i>`;
+    }
+  }
+  
+  updateProgress();
+}
+
+function nextQuestion() {
+  const currentQ = questions[currentQuestionIndex];
+  if (!answers[currentQ.id]) {
+    // Should not happen if button disabled, but safety
+    alert('Please select a response to continue.');
+    return;
+  }
+  
+  if (currentQuestionIndex < questions.length - 1) {
+    currentQuestionIndex++;
+    showQuestion(currentQuestionIndex);
+  } else {
+    // Finish
+    calculateAndShowResults();
+  }
+}
+
+function prevQuestion() {
+  if (currentQuestionIndex > 0) {
+    currentQuestionIndex--;
+    showQuestion(currentQuestionIndex);
+  }
+}
+
+function startQuiz() {
+  document.getElementById('landing-view').classList.add('hidden');
+  document.getElementById('quiz-view').classList.remove('hidden');
+  currentQuestionIndex = 0;
+  answers = {};
+  quizStarted = true;
+  showQuestion(0);
+  updateProgress();
+}
+
+// Calculate results
+function calculateResults() {
+  const scores = { WOA: 0, AOS: 0, RG: 0, QT: 0, PT: 0 };
+  
+  questions.forEach(q => {
+    if (answers[q.id]) {
+      scores[q.cat] += answers[q.id];
+    }
+  });
+  
+  // Find primary, secondary, lowest
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  
+  return {
+    scores,
+    primary: sorted[0][0],
+    primaryScore: sorted[0][1],
+    secondary: sorted[1][0],
+    secondaryScore: sorted[1][1],
+    lowest: sorted[4][0],
+    lowestScore: sorted[4][1]
+  };
+}
+
+function calculateAndShowResults() {
+  const result = calculateResults();
+  
+  // Hide quiz
+  document.getElementById('quiz-view').classList.add('hidden');
+  const resultsView = document.getElementById('results-view');
+  resultsView.classList.remove('hidden');
+  
+  // Primary
+  const pMeta = langMeta[result.primary];
+  const pDetails = langDetails[result.primary];
+  
+  document.getElementById('primary-emoji').innerHTML = pMeta.emoji;
+  document.getElementById('primary-name').innerHTML = pMeta.name;
+  document.getElementById('primary-score').innerHTML = `${result.primaryScore}<span class="text-base align-super text-zinc-400">/28</span>`;
+  document.getElementById('primary-desc').innerHTML = pDetails.primary + `<div class="mt-3 pt-3 border-t text-sm"><span class="font-medium text-rose-600">How to receive it best:</span> ${pDetails.howToReceive}</div>`;
+  
+  // Secondary
+  const sMeta = langMeta[result.secondary];
+  const sDetails = langDetails[result.secondary];
+  document.getElementById('secondary-emoji').innerHTML = sMeta.emoji;
+  document.getElementById('secondary-name').innerHTML = sMeta.name;
+  document.getElementById('secondary-score').innerHTML = `${result.secondaryScore} / 28`;
+  document.getElementById('secondary-desc').innerHTML = sDetails.secondary;
+  
+  // Lowest
+  const lMeta = langMeta[result.lowest];
+  const lDetails = langDetails[result.lowest];
+  document.getElementById('lowest-emoji').innerHTML = lMeta.emoji;
+  document.getElementById('lowest-name').innerHTML = lMeta.name;
+  document.getElementById('lowest-score').innerHTML = `${result.lowestScore} / 28`;
+  document.getElementById('lowest-insight').innerHTML = lDetails.low;
+  
+  // Score bars
+  renderScoreBars(result.scores, result.primary, result.secondary, result.lowest);
+  
+  // Scroll to top of results
+  resultsView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderScoreBars(scores, primaryKey, secondaryKey, lowestKey) {
+  const container = document.getElementById('score-bars');
+  container.innerHTML = '';
+  
+  const maxScore = 28;
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  
+  sorted.forEach(([key, score]) => {
+    const meta = langMeta[key];
+    const isPrimary = key === primaryKey;
+    const isSecondary = key === secondaryKey;
+    
+    const pct = Math.round((score / maxScore) * 100);
+    
+    const div = document.createElement('div');
+    div.className = 'flex items-center gap-x-3';
+    
+    let labelExtra = '';
+    if (isPrimary) labelExtra = '<span class="ml-2 text-xs px-2 py-0.5 bg-rose-100 text-rose-600 rounded font-bold">PRIMARY</span>';
+    else if (isSecondary) labelExtra = '<span class="ml-2 text-xs px-2 py-0.5 bg-teal-100 text-teal-600 rounded font-bold">SECONDARY</span>';
+    
+    div.innerHTML = `
+      <div class="w-8 text-xl text-center flex-shrink-0">${meta.emoji}</div>
+      <div class="flex-1">
+        <div class="flex justify-between items-baseline mb-1">
+          <div class="font-medium text-sm">${meta.name} ${labelExtra}</div>
+          <div class="font-mono text-xs text-zinc-400">${score}/28</div>
+        </div>
+        <div class="h-2.5 bg-zinc-100 rounded-full overflow-hidden">
+          <div class="h-2.5 rounded-full lang-bar" style="width: ${pct}%; background-color: ${meta.accent}"></div>
+        </div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function copyFullResults() {
+  const result = calculateResults();
+  const pMeta = langMeta[result.primary];
+  const sMeta = langMeta[result.secondary];
+  const lMeta = langMeta[result.lowest];
+  
+  let text = `My LoveSpeak Quiz Results 💖\n\n`;
+  text += `PRIMARY: ${pMeta.name} (${result.primaryScore}/28)\n`;
+  text += `SECONDARY: ${sMeta.name} (${result.secondaryScore}/28)\n`;
+  text += `LOWEST: ${lMeta.name} (${result.lowestScore}/28)\n\n`;
+  text += `I just discovered my love languages! Knowing this helps me understand how I feel most loved and how to better love the people around me.\n\n`;
+  text += `Take the free quiz here: https://joshualoydjamespro-arch.github.io/lovespeak-quiz/\n\n`;
+  text += `What's YOUR primary love language? Reply and let's talk about it!`;
+  
+  navigator.clipboard.writeText(text).then(() => {
+    const origText = event.currentTarget ? event.currentTarget.innerHTML : '';
+    const btns = document.querySelectorAll('button');
+    // Simple toast
+    showToast('Results copied to clipboard! Share with your partner or family ❤️');
+  }).catch(() => {
+    // Fallback
+    prompt('Copy this text:', text);
+  });
+}
+
+function copyReflections() {
+  const r1 = document.getElementById('reflect-primary').value.trim();
+  const r2 = document.getElementById('reflect-other').value.trim();
+  
+  let text = `My Love Language Reflections from LoveSpeak Quiz\n\n`;
+  text += `1. How receiving my primary love language would impact me:\n${r1 || '(Not yet written)'}\n\n`;
+  text += `2. Someone important to me & how I can speak their language:\n${r2 || '(Not yet written)'}\n\n`;
+  text += `— Taken from https://joshualoydjamespro-arch.github.io/lovespeak-quiz/`;
+  
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Reflections copied! Use them to start a meaningful conversation.');
+  }).catch(() => {
+    prompt('Copy your reflections:', text);
+  });
+}
+
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.className = `fixed bottom-6 left-1/2 -translate-x-1/2 bg-zinc-900 text-white px-6 py-3 rounded-2xl shadow-2xl text-sm flex items-center gap-x-2 z-[200]`;
+  toast.innerHTML = `<i class="fa-solid fa-check-circle text-emerald-400"></i> <span>${message}</span>`;
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.style.transition = 'all 0.3s ease';
+    toast.style.opacity = '0';
+    setTimeout(() => toast.parentNode.removeChild(toast), 300);
+  }, 2800);
+}
+
+function retakeQuiz() {
+  if (confirm('Start the quiz over? Your current answers and reflections will be lost.')) {
+    document.getElementById('results-view').classList.add('hidden');
+    document.getElementById('landing-view').classList.remove('hidden');
+    answers = {};
+    currentQuestionIndex = 0;
+  }
+}
+
+function showInfoModal() {
+  document.getElementById('info-modal').classList.remove('hidden');
+  document.getElementById('info-modal').classList.add('flex');
+}
+
+function hideInfoModal() {
+  const modal = document.getElementById('info-modal');
+  modal.classList.remove('flex');
+  modal.classList.add('hidden');
+}
+
+// Keyboard support
+function setupKeyboard() {
+  document.addEventListener('keydown', function(e) {
+    const quizVisible = !document.getElementById('quiz-view').classList.contains('hidden');
+    if (!quizVisible) return;
+    
+    if (e.key === 'ArrowRight' || e.key === 'Enter') {
+      const nextBtn = document.getElementById('btn-next');
+      if (nextBtn && !nextBtn.disabled) nextQuestion();
+    }
+    if (e.key === 'ArrowLeft') {
+      prevQuestion();
+    }
+    // Number keys 1-7
+    if (['1','2','3','4','5','6','7'].includes(e.key)) {
+      const container = document.getElementById('scale-container');
+      if (container) {
+        const qId = questions[currentQuestionIndex].id;
+        const score = parseInt(e.key);
+        answers[qId] = score;
+        
+        Array.from(container.children).forEach((b, idx) => {
+          if (idx + 1 === score) {
+            b.className = `scale-btn flex-1 h-12 flex items-center justify-center rounded-2xl border text-lg font-semibold transition-all bg-rose-600 text-white border-rose-600 shadow-inner selected`;
+          } else {
+            b.className = `scale-btn flex-1 h-12 flex items-center justify-center rounded-2xl border text-lg font-semibold transition-all bg-white border-zinc-200 hover:border-rose-200 hover:bg-rose-50 text-zinc-700`;
+          }
+        });
+        updateProgress();
+        document.getElementById('btn-next').disabled = false;
+      }
+    }
+  });
+}
+
+// Initialize everything
+function initApp() {
+  initTailwind();
+  setupKeyboard();
+  
+  // Optional: Check for saved progress (simple)
+  // For now, fresh start each time for privacy/simplicity
+  
+  // Easter egg: click logo to restart landing
+  const logo = document.querySelector('header');
+  if (logo) {
+    logo.addEventListener('click', () => {
+      if (!document.getElementById('landing-view').classList.contains('hidden')) return;
+      if (confirm('Return to start screen?')) {
+        document.getElementById('quiz-view').classList.add('hidden');
+        document.getElementById('results-view').classList.add('hidden');
+        document.getElementById('landing-view').classList.remove('hidden');
+      }
+    });
+  }
+  
+  // Preload first question scale (hidden until started)
+  console.log('%c[LoveSpeak] Beautiful standalone quiz ready. Deployed via GitHub Pages.', 'color:#e11d48');
+}
+
+// Boot
+window.onload = initApp;
+</script>
+</body>
+</html>
